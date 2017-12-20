@@ -1,4 +1,4 @@
-package com.chanta.androidlaba3.dbUtils;
+package com.chanta.androidlaba3.dbUtils.dbAdapter;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.chanta.androidlaba3.dbUtils.DbHelper;
 import com.chanta.androidlaba3.entity.Photo;
 
 import java.util.ArrayList;

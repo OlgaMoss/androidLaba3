@@ -1,6 +1,7 @@
-package dbUtils;
+package com.chanta.androidlaba3.dbUtils;
 
 import android.content.Context;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -42,32 +43,37 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("create table " + TABLE_CATEGORY + " (" +
-                KEY_ID + " integer primary key autoincrement," +
-                NAME + " text not null," +
-                DESCRIPTION_CATEGORY + " text," +
-                PHOTO_ID + " integer," +
-                "FOREIGN KEY (" + PHOTO_ID + ") REFERENCES " + TABLE_PHOTO + " (" + KEY_ID + "));");
 
-        sqLiteDatabase.execSQL("create table " + TABLE_RECORD + " (" +
-                KEY_ID + " integer primary key autoincrement," +
-                DESCRIPTION_RECORD + " text not null," +
-                DATE_START + " text not null," +
-                DATE_END + " text not null," +
-                ROUNDED_TIME + " text not null," +
-                PHOTO_ID_LIST + " integer," +
-                CATEGORY_ID + " integer not null," +
-                "FOREIGN KEY (" + PHOTO_ID_LIST + ") REFERENCES " + TABLE_PHOTO + " (" + KEY_ID + ")," +
-                "FOREIGN KEY (" + CATEGORY_ID + ") REFERENCES " + TABLE_CATEGORY + " (" + KEY_ID + "));");
+        try {
+            sqLiteDatabase.execSQL("create table " + TABLE_CATEGORY + " (" +
+                    KEY_ID + " integer primary key autoincrement," +
+                    NAME + " text not null," +
+                    DESCRIPTION_CATEGORY + " text," +
+                    PHOTO_ID + " integer," +
+                    "FOREIGN KEY (" + PHOTO_ID + ") REFERENCES " + TABLE_PHOTO + " (" + KEY_ID + "));");
 
-        sqLiteDatabase.execSQL("create table " + TABLE_PHOTO + " (" +
-                KEY_ID + " integer primary key autoincrement," +
-                TITLE + " text not null," +
-                PATH + " text not null" +
-                ");");
+            sqLiteDatabase.execSQL("create table " + TABLE_RECORD + " (" +
+                    KEY_ID + " integer primary key autoincrement," +
+                    DESCRIPTION_RECORD + " text not null," +
+                    DATE_START + " text not null," +
+                    DATE_END + " text not null," +
+                    ROUNDED_TIME + " text not null," +
+                    PHOTO_ID_LIST + " integer," +
+                    CATEGORY_ID + " integer not null," +
+                    "FOREIGN KEY (" + PHOTO_ID_LIST + ") REFERENCES " + TABLE_PHOTO + " (" + KEY_ID + ")," +
+                    "FOREIGN KEY (" + CATEGORY_ID + ") REFERENCES " + TABLE_CATEGORY + " (" + KEY_ID + "));");
 
-        insertDefaultTableCategory(sqLiteDatabase);
-        insertDefaultTableRecord(sqLiteDatabase);
+            sqLiteDatabase.execSQL("create table " + TABLE_PHOTO + " (" +
+                    KEY_ID + " integer primary key autoincrement," +
+                    TITLE + " text not null," +
+                    PATH + " text not null" +
+                    ");");
+
+            insertDefaultTableCategory(sqLiteDatabase);
+            insertDefaultTableRecord(sqLiteDatabase);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private void insertDefaultTableCategory(SQLiteDatabase sqLiteDatabase) {

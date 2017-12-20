@@ -1,11 +1,13 @@
-package com.chanta.androidlaba3.dbUtils;
+package com.chanta.androidlaba3.dbUtils.dbAdapter;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.chanta.androidlaba3.dbUtils.DbHelper;
 import com.chanta.androidlaba3.entity.Category;
 
 import java.util.ArrayList;
@@ -24,17 +26,24 @@ public class DbCategory {
     private SQLiteDatabase db;
     private List<Category> mCategoryList;
 
-    // private String description;
-    //private int photoId;
-
     public DbCategory(Context context) {
         this.context = context;
         dbHelper = new DbHelper(context);
     }
 
+    public DbCategory openDB() {
+        try {
+            db = dbHelper.getWritableDatabase();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return this;
+    }
+
     public void updateCategory(int id, String name, String newDescription, String newPhotoId) {
         db = dbHelper.getWritableDatabase();
         ContentValues cv = new ContentValues();
+        cv.put(DbHelper.NAME, name);
         cv.put(DbHelper.DESCRIPTION_CATEGORY, newDescription);
         cv.put(DbHelper.PHOTO_ID, newPhotoId);
         db.update(DbHelper.TABLE_CATEGORY, cv, DbHelper.KEY_ID + "= ?", new String[]{String.valueOf(id)});
@@ -47,8 +56,9 @@ public class DbCategory {
     }
 
     // метод возвращающий коллекцию всех данных
-    public List<Category> getCategory() {
-        cursor = db.query(DbHelper.TABLE_CATEGORY, null, null, null, null, null, null);
+    public List<Category> getAllCategories() {
+        String[] columns = {DbHelper.KEY_ID, DbHelper.NAME, DbHelper.DESCRIPTION_CATEGORY, DbHelper.PHOTO_ID};
+        cursor = db.query(DbHelper.TABLE_CATEGORY, columns, null, null, null, null, null);
         mCategoryList = new ArrayList<>();
 
         if (cursor.moveToFirst()) {
@@ -74,7 +84,6 @@ public class DbCategory {
 
     }
 
-    // здесь закрываем все соединения с базой и класс-помощник
     public void close() {
         dbHelper.close();
         db.close();

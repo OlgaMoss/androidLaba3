@@ -53,7 +53,6 @@ public class CategoryViewHolder extends RecyclerView.ViewHolder implements View.
 
         final EditText editNameText = layoutView.findViewById(R.id.edit_name_category);
         final EditText editDescriptionText = layoutView.findViewById(R.id.edit_description_category);
-//        List<Category> categories = dbCategory.getAllCategories();
         editNameText.setText(categories.get(position).getName());
         editDescriptionText.setText(categories.get(position).getDescriptionCategory());
 

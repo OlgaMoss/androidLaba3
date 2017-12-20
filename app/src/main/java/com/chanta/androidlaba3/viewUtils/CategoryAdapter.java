@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.chanta.androidlaba3.R;
-import com.chanta.androidlaba3.dbUtils.dbAdapter.DbCategory;
 import com.chanta.androidlaba3.entity.Category;
 
 import java.util.List;
@@ -18,12 +17,9 @@ import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
     private List<Category> categories;
-    private DbCategory dbCategory;
-
     private Context context;
 
     public CategoryAdapter(Context context, List<Category> players) {
-        //ASSIGN THEM LOCALLY
         this.context = context;
         this.categories = players;
     }
@@ -33,9 +29,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
         View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.item_category, parent, false);
         CategoryViewHolder viewHolder = new CategoryViewHolder(itemLayoutView, context, categories);
-
         return viewHolder;
-
     }
 
     @Override
