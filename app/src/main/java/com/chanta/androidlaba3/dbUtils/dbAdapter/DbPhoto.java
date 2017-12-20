@@ -1,4 +1,4 @@
-package dbUtils;
+package com.chanta.androidlaba3.dbUtils;
 
 import android.content.ContentValues;
 import android.content.Context;

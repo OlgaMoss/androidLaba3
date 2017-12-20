@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">AndroidLaba3</string>
+    <string name="choice_ok">Ок</string>
+    <string name="cancel">Отмена</string>
 </resources>

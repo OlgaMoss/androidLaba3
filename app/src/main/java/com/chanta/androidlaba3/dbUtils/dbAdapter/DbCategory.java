@@ -1,4 +1,4 @@
-package dbUtils;
+package com.chanta.androidlaba3.dbUtils;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -32,14 +32,12 @@ public class DbCategory {
         dbHelper = new DbHelper(context);
     }
 
-    //апгрейд по имени категории //todo подумать  "name = ?" мб поменять на id
-    public void updateCategory(String name, String newDescription, String newPhotoId) {
+    public void updateCategory(int id, String name, String newDescription, String newPhotoId) {
         db = dbHelper.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(DbHelper.DESCRIPTION_CATEGORY, newDescription);
         cv.put(DbHelper.PHOTO_ID, newPhotoId);
-        String[] args = new String[]{name};
-        db.update(DbHelper.TABLE_CATEGORY, cv, "name = ?", args);
+        db.update(DbHelper.TABLE_CATEGORY, cv, DbHelper.KEY_ID + "= ?", new String[]{String.valueOf(id)});
     }
 
     // метод для удаления строки по id
