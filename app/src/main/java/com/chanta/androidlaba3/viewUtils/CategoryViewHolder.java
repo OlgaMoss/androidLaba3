@@ -15,7 +15,6 @@ import com.chanta.androidlaba3.R;
 import com.chanta.androidlaba3.RecordsActivity;
 import com.chanta.androidlaba3.dbUtils.DbHelper;
 import com.chanta.androidlaba3.dbUtils.dbAdapter.DbCategory;
-import com.chanta.androidlaba3.dbUtils.dbAdapter.DbRecord;
 import com.chanta.androidlaba3.entity.Category;
 
 import java.util.List;
@@ -50,7 +49,6 @@ public class CategoryViewHolder extends RecyclerView.ViewHolder implements View.
         context.startActivity(intent);
     }
 
-//todo надо что-то сделать с позицией - бага!!!!
     @Override
     public boolean onLongClick(View view) {
         LayoutInflater li = LayoutInflater.from(view.getContext());
@@ -65,7 +63,7 @@ public class CategoryViewHolder extends RecyclerView.ViewHolder implements View.
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
         builder.setView(layoutView)
-                .setTitle("Edit category")
+                .setTitle("Править категорию")
                 .setCancelable(false)
                 .setPositiveButton(R.string.choice_ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {

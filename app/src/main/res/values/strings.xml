@@ -4,4 +4,9 @@
     <string name="cancel">Отмена</string>
     <string name="statistic">Статистика</string>
     <string name="menu_log_out">Выход</string>
+    <string name="date">Дата</string>
+    <string name="time">Время</string>
+    <string name="text_date_start">Начало:</string>
+    <string name="text_date_end">Конец:</string>
+    <string name="text_rounded_time">Запись продлиться</string>
 </resources>

@@ -35,13 +35,13 @@ public class DbPhoto {
         db = dbHelper.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(DbHelper.TITLE, newTitle);
-        cv.put(DbHelper.PATH, newPath);
+        cv.put(DbHelper.IMAGE, newPath);
         String[] args = new String[]{String.valueOf(id)};
         db.update(DbHelper.TABLE_PHOTO, cv, "_id = ?", args);
     }
 
     public void insertPhoto(String newTitle, String newPath) {
-        String insertQuery = "insert into " + DbHelper.TABLE_PHOTO + " (" + DbHelper.TITLE + DbHelper.PATH + ")" +
+        String insertQuery = "insert into " + DbHelper.TABLE_PHOTO + " (" + DbHelper.TITLE + DbHelper.IMAGE + ")" +
                 " values ('" + newTitle + "', '" + newPath + "')";
         dbHelper.getWritableDatabase().execSQL(insertQuery);
     }
@@ -59,11 +59,11 @@ public class DbPhoto {
 
             int idColInd = cursor.getColumnIndex(DbHelper.KEY_ID);
             int titleColInd = cursor.getColumnIndex(DbHelper.TITLE);
-            int pathColInd = cursor.getColumnIndex(DbHelper.PATH);
+            int pathColInd = cursor.getColumnIndex(DbHelper.IMAGE);
 
             do {
                 Photo photo = new Photo(cursor.getInt(idColInd),
-                        cursor.getString(titleColInd), cursor.getString(pathColInd));
+                        cursor.getString(titleColInd), cursor.getBlob(pathColInd));
                 mPhotoList.add(photo);
             } while (cursor.moveToNext());
 

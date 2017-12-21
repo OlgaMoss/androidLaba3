@@ -1,5 +1,7 @@
 package com.chanta.androidlaba3.entity;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by chanta on 19.12.17.
  */
@@ -7,15 +9,15 @@ package com.chanta.androidlaba3.entity;
 public class Photo {
     private int id;
     private String title;
-    private String path;
+    private byte[] image;
 
     public Photo() {
     }
 
-    public Photo(int id, String title, String path) {
+    public Photo(int id, String title, byte[] image) {
         this.id = id;
         this.title = title;
-        this.path = path;
+        this.image = image;
     }
 
     public int getId() {
@@ -34,11 +36,11 @@ public class Photo {
         this.title = title;
     }
 
-    public String getPath() {
-        return path;
+    public byte[] getImage() {
+        return image;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 }

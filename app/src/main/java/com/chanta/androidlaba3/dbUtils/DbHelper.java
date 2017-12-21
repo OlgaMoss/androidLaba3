@@ -24,7 +24,9 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public static final String DESCRIPTION_RECORD = "description_record";
     public static final String DATE_START = "date_start";
+    public static final String TIME_START = "time_start";
     public static final String DATE_END = "date_end";
+    public static final String TIME_END = "time_end";
     public static final String ROUNDED_TIME = "rounded_time";
     public static final String PHOTO_ID_LIST = "photo_id_list";
     public static final String CATEGORY_ID = "category_id";
@@ -32,7 +34,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String TABLE_PHOTO = "photo";
 
     public static final String TITLE = "title";
-    public static final String PATH = "path";
+    public static final String IMAGE = "image";
 
     private static final String DATABASE_NAME = "DB";
     private static final int DATABASE_VERSION = 1;
@@ -56,7 +58,9 @@ public class DbHelper extends SQLiteOpenHelper {
                     KEY_ID + " integer primary key autoincrement," +
                     DESCRIPTION_RECORD + " text not null," +
                     DATE_START + " text not null," +
+                    TIME_START + " text not null," +
                     DATE_END + " text not null," +
+                    TIME_END + " text not null," +
                     ROUNDED_TIME + " text not null," +
                     PHOTO_ID_LIST + " integer," +
                     CATEGORY_ID + " integer not null," +
@@ -66,7 +70,7 @@ public class DbHelper extends SQLiteOpenHelper {
             sqLiteDatabase.execSQL("create table " + TABLE_PHOTO + " (" +
                     KEY_ID + " integer primary key autoincrement," +
                     TITLE + " text not null," +
-                    PATH + " text not null" +
+                    IMAGE + " blob not null" +
                     ");");
 
             insertDefaultTableCategory(sqLiteDatabase);
@@ -93,21 +97,36 @@ public class DbHelper extends SQLiteOpenHelper {
 
     private void insertDefaultTableRecord(SQLiteDatabase sqLiteDatabase) {
         String insertQuery = "insert into " + TABLE_RECORD
-                + "(" + DESCRIPTION_RECORD + "," + DATE_START + "," + DATE_END + "," + ROUNDED_TIME +
-                "," + PHOTO_ID_LIST + "," + CATEGORY_ID + ")"
-                + " values ('Посмотреть телевизор', '15:50', '15:10', '00:20', ' ', '3')";
+                + "(" + DESCRIPTION_RECORD + ","
+                + DATE_START + "," + TIME_START + ","
+                + DATE_END + "," + TIME_END + ","
+                + ROUNDED_TIME + "," + PHOTO_ID_LIST + "," + CATEGORY_ID + ")"
+                + " values ('Посмотреть телевизор', " +
+                "'12/12/13', '15:50', " +
+                "'12/12/13', '15:10', " +
+                "'00:20', ' ', '3')";
         sqLiteDatabase.execSQL(insertQuery);
 
         insertQuery = "insert into " + TABLE_RECORD
-                + "(" + DESCRIPTION_RECORD + "," + DATE_START + "," + DATE_END + "," + ROUNDED_TIME +
-                "," + PHOTO_ID_LIST + "," + CATEGORY_ID + ")"
-                + " values ('Поирать', '21:00', '21:30', '00:30', ' ', '3')";
+                + "(" + DESCRIPTION_RECORD + ","
+                + DATE_START + "," + TIME_START + ","
+                + DATE_END + "," + TIME_END + ","
+                + ROUNDED_TIME + "," + PHOTO_ID_LIST + "," + CATEGORY_ID + ")"
+                + " values ('Поирать', " +
+                "'12/12/13', '21:00', " +
+                "'12/12/13', '21:30'," +
+                "'00:30', ' ', '3')";
         sqLiteDatabase.execSQL(insertQuery);
 
         insertQuery = "insert into " + TABLE_RECORD
-                + "(" + DESCRIPTION_RECORD + "," + DATE_START + "," + DATE_END + "," + ROUNDED_TIME +
-                "," + PHOTO_ID_LIST + "," + CATEGORY_ID + ")"
-                + " values ('Посмотреть на стену', '18:00', '18:10', '00:10', ' ', '3')";
+                + "(" + DESCRIPTION_RECORD + ","
+                + DATE_START + "," + TIME_START + ","
+                + DATE_END + "," + TIME_END + ","
+                + ROUNDED_TIME + "," + PHOTO_ID_LIST + "," + CATEGORY_ID + ")"
+                + " values ('Посмотреть на стену'," +
+                "'12/12/13', '18:00'," +
+                "'12/12/13', '18:10', " +
+                "'00:10', ' ', '3')";
         sqLiteDatabase.execSQL(insertQuery);
     }
 
