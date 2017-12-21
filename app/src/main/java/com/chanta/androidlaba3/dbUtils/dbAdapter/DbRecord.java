@@ -3,6 +3,7 @@ package com.chanta.androidlaba3.dbUtils.dbAdapter;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -25,20 +26,23 @@ public class DbRecord {
     private SQLiteDatabase db;
     private List<Record> mPhotoList;
 
-//    private String descriptionRecord;
-//    private String dateStart;
-//    private String dateEnd;
-//    private String roundedTime;
-//    private String photoIdList;
-//    private int categoryId;
 
     public DbRecord(Context context) {
         this.context = context;
         dbHelper = new DbHelper(context);
     }
 
+    public DbRecord openDB() {
+        try {
+            db = dbHelper.getWritableDatabase();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return this;
+    }
+
     //todo проверить???
-    //todo может id хранить в String
+    //todo может id хранить в String newCategoryId - а такая она новая,
     public void updateRecord(int id, String newDescriptionRecord, String newDateStart, String newDateEnd,
                              String newRoundedTime, String newPhotoIdList, int newCategoryId) {
         db = dbHelper.getWritableDatabase();
@@ -53,6 +57,7 @@ public class DbRecord {
         db.update(DbHelper.TABLE_RECORD, cv, "_id = ?", args);
     }
 
+
     //todo проверку на категорииID ??
     public void insertPhoto(String descriptionRecord, String dateStart, String dateEnd, String roundedTime,
                             String photoIdList, int categoryId) {
@@ -66,11 +71,23 @@ public class DbRecord {
 
     public void deleteItem(int id) {
         db = dbHelper.getWritableDatabase();
-        db.delete(DbHelper.TABLE_RECORD, DbHelper.KEY_ID + "=" + id, null);
+        db.delete(DbHelper.TABLE_RECORD, DbHelper.KEY_ID + "=" + id +1, null);
     }
 
-    public List<Record> getCategory() {
-        cursor = db.query(DbHelper.TABLE_RECORD, null, null, null, null, null, null);
+
+//    private String descriptionRecord;
+//    private String dateStart;
+//    private String dateEnd;
+//    private String roundedTime;
+//    private String photoIdList;
+//    private int categoryId;
+
+
+    public List<Record> getAllRecords(int categoryId) {
+        String[] columns = {DbHelper.KEY_ID, DbHelper.DESCRIPTION_RECORD, DbHelper.DATE_START,
+                DbHelper.DATE_END, DbHelper.ROUNDED_TIME, DbHelper.PHOTO_ID_LIST, DbHelper.CATEGORY_ID};
+        cursor = db.query(DbHelper.TABLE_RECORD, columns, DbHelper.CATEGORY_ID + "= ?",
+                new String[]{String.valueOf(categoryId +1)}, null, null, null);
         mPhotoList = new ArrayList<>();
 
         if (cursor.moveToFirst()) {
@@ -80,7 +97,7 @@ public class DbRecord {
             int dateStartColInd = cursor.getColumnIndex(DbHelper.DATE_START);
             int dateEndColInd = cursor.getColumnIndex(DbHelper.DATE_END);
             int roundedTimeColInd = cursor.getColumnIndex(DbHelper.ROUNDED_TIME);
-            int photoIdListColInd = cursor.getColumnIndex(DbHelper.PHOTO_ID);
+            int photoIdListColInd = cursor.getColumnIndex(DbHelper.PHOTO_ID_LIST);
             int categoryIdColInd = cursor.getColumnIndex(DbHelper.CATEGORY_ID);
 
             do {

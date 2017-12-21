@@ -19,9 +19,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
     private List<Category> categories;
     private Context context;
 
-    public CategoryAdapter(Context context, List<Category> players) {
+    public CategoryAdapter(Context context, List<Category> categories) {
         this.context = context;
-        this.categories = players;
+        this.categories = categories;
     }
 
     @Override
@@ -31,6 +31,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
         CategoryViewHolder viewHolder = new CategoryViewHolder(itemLayoutView, context, categories);
         return viewHolder;
     }
+
 
     @Override
     public void onBindViewHolder(CategoryViewHolder holder, int position) {

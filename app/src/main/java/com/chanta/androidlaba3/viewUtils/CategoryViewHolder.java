@@ -3,6 +3,7 @@ package com.chanta.androidlaba3.viewUtils;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +12,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chanta.androidlaba3.R;
+import com.chanta.androidlaba3.RecordsActivity;
+import com.chanta.androidlaba3.dbUtils.DbHelper;
 import com.chanta.androidlaba3.dbUtils.dbAdapter.DbCategory;
+import com.chanta.androidlaba3.dbUtils.dbAdapter.DbRecord;
 import com.chanta.androidlaba3.entity.Category;
 
 import java.util.List;
@@ -32,7 +36,7 @@ public class CategoryViewHolder extends RecyclerView.ViewHolder implements View.
         this.categories = categories;
 
         photo = itemView.findViewById(R.id.imageView);
-        nameTxt = itemView.findViewById(R.id.text_name_category);
+        nameTxt = itemView.findViewById(R.id.text_description_record);
         descriptionTxt = itemView.findViewById(R.id.text_description_category);
         itemView.setOnClickListener(this);
         itemView.setOnLongClickListener(this);
@@ -40,10 +44,13 @@ public class CategoryViewHolder extends RecyclerView.ViewHolder implements View.
 
     @Override
     public void onClick(View view) {
-        //todo интент на новый фрейм
+        final int position = this.getLayoutPosition();
+        Intent intent = new Intent(context, RecordsActivity.class);
+        intent.putExtra(DbHelper.CATEGORY_ID, position);
+        context.startActivity(intent);
     }
 
-
+//todo надо что-то сделать с позицией - бага!!!!
     @Override
     public boolean onLongClick(View view) {
         LayoutInflater li = LayoutInflater.from(view.getContext());

@@ -46,16 +46,14 @@ public class DbCategory {
         cv.put(DbHelper.NAME, name);
         cv.put(DbHelper.DESCRIPTION_CATEGORY, newDescription);
         cv.put(DbHelper.PHOTO_ID, newPhotoId);
-        db.update(DbHelper.TABLE_CATEGORY, cv, DbHelper.KEY_ID + "= ?", new String[]{String.valueOf(id)});
+        db.update(DbHelper.TABLE_CATEGORY, cv, DbHelper.KEY_ID + "= ?", new String[]{String.valueOf(id + 1)});
     }
 
-    // метод для удаления строки по id
     public void deleteItem(int id) {
         db = dbHelper.getWritableDatabase();
-        db.delete(DbHelper.TABLE_CATEGORY, DbHelper.KEY_ID + "=" + id, null);
+        db.delete(DbHelper.TABLE_CATEGORY, DbHelper.KEY_ID + "=" + (id + 1), null);
     }
 
-    // метод возвращающий коллекцию всех данных
     public List<Category> getAllCategories() {
         String[] columns = {DbHelper.KEY_ID, DbHelper.NAME, DbHelper.DESCRIPTION_CATEGORY, DbHelper.PHOTO_ID};
         cursor = db.query(DbHelper.TABLE_CATEGORY, columns, null, null, null, null, null);
@@ -77,11 +75,8 @@ public class DbCategory {
         } else {
             Log.d(TAG, "В базе нет данных!");
         }
-
         cursor.close();
-
         return mCategoryList;
-
     }
 
     public void close() {
