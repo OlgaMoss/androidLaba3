@@ -1,19 +1,38 @@
 package com.chanta.androidlaba3;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chanta.androidlaba3.dbUtils.DbHelper;
+import com.chanta.androidlaba3.dbUtils.dbAdapter.DbPhoto;
 import com.chanta.androidlaba3.dbUtils.dbAdapter.DbRecord;
+import com.chanta.androidlaba3.entity.Photo;
 import com.chanta.androidlaba3.entity.Record;
+import com.chanta.androidlaba3.viewUtils.PhotoAdapter;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class EditNewRecordActivity extends AppCompatActivity {
 
@@ -21,6 +40,7 @@ public class EditNewRecordActivity extends AppCompatActivity {
     public static final int DAY_TO_HOUR = 24;
     public static final int MOUTH_TO_HOUR = 730;
     public static final int YEAR_TO_HOUR = 8760;
+    public static final int REQUEST_CODE_GALLERY = 999;
 
     private int startYear, startMonth, startDay, startHours, startMinutes;
     private int endYear, endMonth, endDay, endHours, endMinutes;
@@ -29,6 +49,11 @@ public class EditNewRecordActivity extends AppCompatActivity {
     private int positionCategory;
     private Record record;
     private boolean isNew = true;
+    private DbPhoto dbPhoto;
+    private List<Photo> photos;
+    private RecyclerView recyclerPhoto;
+    private String photoIdList = "";
+    private Button addImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +64,13 @@ public class EditNewRecordActivity extends AppCompatActivity {
             positionCategory = getIntent().getIntExtra(DbHelper.CATEGORY_ID, 0);
         }
 
+        photos = new ArrayList<>();
         mDescriptionEditText = (EditText) findViewById(R.id.edit_description_record);
         mStartDateTextView = (TextView) findViewById(R.id.startDate);
         mStartTimeTextView = (TextView) findViewById(R.id.startTime);
         mEndDateTextView = (TextView) findViewById(R.id.endDate);
         mEndTimeTextView = (TextView) findViewById(R.id.endTime);
+        recyclerPhoto = (RecyclerView) findViewById(R.id.photoRecycleView);
 
         Record editRecord = (Record) getIntent().getSerializableExtra(RECORD);
         if (editRecord != null) {
@@ -55,7 +82,8 @@ public class EditNewRecordActivity extends AppCompatActivity {
             mStartTimeTextView.setText(editRecord.getTimeStart());
             mEndDateTextView.setText(editRecord.getDateEnd());
             mEndTimeTextView.setText(editRecord.getTimeEnd());
-            // todo images
+            photoIdList = editRecord.getPhotoIdList();
+
         } else {
             final Calendar c = Calendar.getInstance();
 
@@ -76,6 +104,11 @@ public class EditNewRecordActivity extends AppCompatActivity {
             setDateToTextView(mEndDateTextView, String.valueOf(endDay), String.valueOf(endMonth), String.valueOf(endYear));
             setTimeToTextView(mEndTimeTextView, String.valueOf(endHours), String.valueOf(endMinutes));
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
         findViewById(R.id.accepted_floatingActionButton).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +128,7 @@ public class EditNewRecordActivity extends AppCompatActivity {
                             mEndDateTextView.getText().toString(),
                             mEndTimeTextView.getText().toString(),
                             roundedTime,
-                            null, //todo встатвить для изображений
+                            photoIdList,
                             positionCategory);
                     final Intent intent = new Intent(v.getContext(), RecordsActivity.class);
                     intent.putExtra(DbHelper.CATEGORY_ID, positionCategory);
@@ -109,17 +142,90 @@ public class EditNewRecordActivity extends AppCompatActivity {
                             mEndDateTextView.getText().toString(),
                             mEndTimeTextView.getText().toString(),
                             roundedTime,
-                            null, //todo встатвить для изображений
+                            photoIdList,
                             positionCategory);
                     final Intent intent = new Intent(v.getContext(), RecordsActivity.class);
                     intent.putExtra(DbHelper.CATEGORY_ID, positionCategory - 1);
                     startActivity(intent);
                 }
-
-
             }
         });
+
+        //todo add images
+        addImage = (Button) findViewById(R.id.addImageBtn);
+        addImage.setOnClickListener(v -> {
+
+            ActivityCompat.requestPermissions(
+                    EditNewRecordActivity.this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    REQUEST_CODE_GALLERY);
+
+        });
+
+        dbPhoto = new DbPhoto(this);
+        dbPhoto.openDB();
+
+        List<Photo> photosList = dbPhoto.getAllPhotos();
+
+        if (photoIdList != "") {
+            for (int i = 0; i < photoIdList.split(",").length; i++) {
+                photos.add(photosList.get(Integer.parseInt(photoIdList.split(",")[i]) - 1));
+            }
+        }
+
+        recyclerPhoto.setLayoutManager(new LinearLayoutManager(this));
+        recyclerPhoto.setAdapter(new PhotoAdapter(this, photos));
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if (requestCode == REQUEST_CODE_GALLERY) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, REQUEST_CODE_GALLERY);
+            } else {
+                Toast.makeText(getApplicationContext(), "You don't have permission to access file location!", Toast.LENGTH_SHORT).show();
+            }
+            return;
+        }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == REQUEST_CODE_GALLERY && resultCode == RESULT_OK && data != null) {
+            Uri uri = data.getData();
+
+            try {
+                InputStream inputStream = getContentResolver().openInputStream(uri);
+
+                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+
+                //todo в базу записать
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
+                byte[] byteArray = stream.toByteArray();
+
+                DbPhoto dbPhoto = new DbPhoto(this);
+                dbPhoto.openDB();
+                dbPhoto.insertPhoto("фото", byteArray);
+
+                List<Photo> photoList = dbPhoto.getAllPhotos();
+                String photoIdStr = String.valueOf(photoList.get(photoList.size() - 1).getId());
+                photoIdList = photoIdList == "" ? photoIdStr : photoIdList + "," + photoIdStr;
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
 
     private String getRoundedTime(String startDate, String startTime, String endDate, String endTime) {
         int startYear = Integer.parseInt(startDate.split("/")[0]);
@@ -225,9 +331,9 @@ public class EditNewRecordActivity extends AppCompatActivity {
         timePickerDialog.show();
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        finish();
-    }
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        finish();
+//    }
 }

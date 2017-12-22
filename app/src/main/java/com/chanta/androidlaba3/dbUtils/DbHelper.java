@@ -70,7 +70,7 @@ public class DbHelper extends SQLiteOpenHelper {
             sqLiteDatabase.execSQL("create table " + TABLE_PHOTO + " (" +
                     KEY_ID + " integer primary key autoincrement," +
                     TITLE + " text not null," +
-                    IMAGE + " blob not null" +
+                    IMAGE + " blob " +
                     ");");
 
             insertDefaultTableCategory(sqLiteDatabase);

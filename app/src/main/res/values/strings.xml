@@ -19,4 +19,5 @@
     <string name="radio_button_3">Отдых</string>
     <string name="radio_button_4">Уборка</string>
     <string name="radio_button_5">Сон</string>
+    <string name="add_image">Добавить картинку</string>
 </resources>

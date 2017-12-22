@@ -96,6 +96,28 @@
             android:text="@string/time" />
     </LinearLayout>
 
+    <Button
+        android:id="@+id/addImageBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/date_end_layout"
+        android:layout_marginTop="16dp"
+        android:text="@string/add_image" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/photoRecycleView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/addImageBtn"
+        android:layout_marginTop="16dp"
+        android:clickable="true"
+        android:clipToPadding="false"
+        android:gravity="top"
+        android:padding="5dp"
+        android:scrollbars="vertical"
+        tools:listitem="@layout/item_photo" />
+
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/accepted_floatingActionButton"
         android:layout_width="wrap_content"

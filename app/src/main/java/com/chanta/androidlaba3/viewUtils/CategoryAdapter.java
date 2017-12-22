@@ -1,13 +1,17 @@
 package com.chanta.androidlaba3.viewUtils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.chanta.androidlaba3.R;
+import com.chanta.androidlaba3.dbUtils.dbAdapter.DbPhoto;
 import com.chanta.androidlaba3.entity.Category;
+import com.chanta.androidlaba3.entity.Photo;
 
 import java.util.List;
 
@@ -37,6 +41,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
     public void onBindViewHolder(CategoryViewHolder holder, int position) {
         holder.nameTxt.setText(categories.get(position).getName());
         holder.descriptionTxt.setText(categories.get(position).getDescriptionCategory());
+//        int photoId = categories.get(position).getPhotoId();
+//        DbPhoto dbPhoto = new DbPhoto(context);
+//        Photo photo = dbPhoto.getAllPhotos(String.valueOf(photoId)).get(0);
+//        byte[] foodImage = photo.getImage();
+//        Bitmap bitmap = BitmapFactory.decodeByteArray(foodImage, 0, foodImage.length);
+//        holder.photo.setImageBitmap(bitmap);
     }
 
     @Override
