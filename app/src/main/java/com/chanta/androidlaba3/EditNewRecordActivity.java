@@ -140,11 +140,17 @@ public class EditNewRecordActivity extends AppCompatActivity {
                 DAY_TO_HOUR * (endDay - startDay) +
                 MOUTH_TO_HOUR * (endMonth - startMonth) +
                 YEAR_TO_HOUR * (endYear - startYear));
+        if (hour.length() == 1) {
+            hour = "0" + hour;
+        }
+        if (minute.length() == 1) {
+            minute = "0" + minute;
+        }
 
         return hour + ":" + minute;
     }
 
-    private void setDateToTextView(final TextView textView, final String day, final String month, final String year) {
+    public void setDateToTextView(final TextView textView, final String day, final String month, final String year) {
         textView.setText(String.format(
                 "%s%s%s%s%s",
                 day,

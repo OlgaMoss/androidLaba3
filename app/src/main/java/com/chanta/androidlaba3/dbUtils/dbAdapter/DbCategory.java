@@ -51,7 +51,8 @@ public class DbCategory {
 
     public void deleteItem(int id) {
         db = dbHelper.getWritableDatabase();
-        db.delete(DbHelper.TABLE_CATEGORY, DbHelper.KEY_ID + "=" + (id + 1), null);
+        String[] args = new String[]{String.valueOf(id)};
+        db.delete(DbHelper.TABLE_CATEGORY, DbHelper.KEY_ID + "=" + id , args);
     }
 
     public List<Category> getAllCategories() {

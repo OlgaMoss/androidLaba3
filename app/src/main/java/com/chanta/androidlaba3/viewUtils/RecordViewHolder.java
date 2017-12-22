@@ -60,7 +60,7 @@ public class RecordViewHolder extends RecyclerView.ViewHolder implements View.On
         final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
         builder.setTitle("Удалить запись?")
                 .setCancelable(false)
-                .setPositiveButton(R.string.choice_ok, (dialog, which) -> dbRecord.deleteItem(records.get(position - 1).getId()))
+                .setPositiveButton(R.string.choice_ok, (dialog, which) -> dbRecord.deleteItem(records.get(position).getId()))
                 .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel());
         AlertDialog dialog = builder.create();
         dialog.show();

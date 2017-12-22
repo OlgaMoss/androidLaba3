@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.chanta.androidlaba3.StatisticsActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp">
+
+                <TextView
+                    android:id="@+id/header_textView"
+                    style="@style/Base.TextAppearance.AppCompat.Headline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:text="@string/header_text" />
+
+                <CheckBox
+                    android:id="@+id/any_Time_CheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/header_textView"
+                    android:text="За произвольный отрезок времени" />
+
+                <LinearLayout
+                    android:id="@+id/date_start_layout_any_Time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/any_Time_CheckBox"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/startDateAnyTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:clickable="true"
+                        android:onClick="onChooseStartDateAnyTime"
+                        android:text="@string/date" />
+
+                    <TextView
+                        android:id="@+id/endDateAnyTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:clickable="true"
+                        android:onClick="onChooseEndDateAnyTime"
+                        android:text="@string/date" />
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/name_list_1_textView"
+                    style="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/date_start_layout_any_Time"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/text_top_cases" />
+
+                <TextView
+                    android:id="@+id/list_1_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/name_list_1_textView"
+                    android:layout_centerHorizontal="true"
+                    android:text="TextView" />
+
+                <TextView
+                    android:id="@+id/name_list_2_textView"
+                    style="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/list_1_textView"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/text_list_2" />
+
+                <TextView
+                    android:id="@+id/list_2_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/name_list_2_textView"
+                    android:layout_centerHorizontal="true"
+                    android:text="TextView" />
+
+                <TextView
+                    android:id="@+id/name_list_3_textView"
+                    style="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/list_2_textView"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/text_lost_3" />
+
+                <CheckBox
+                    android:id="@+id/radioButton1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/name_list_3_textView"
+                    android:clickable="true"
+                    android:onClick="theTotalTimeForTheSelectedCategories"
+                    android:text="@string/radio_button_1" />
+
+                <CheckBox
+                    android:id="@+id/radioButton2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/radioButton1"
+                    android:clickable="true"
+                    android:onClick="theTotalTimeForTheSelectedCategories"
+                    android:text="@string/radio_button_2" />
+
+                <CheckBox
+                    android:id="@+id/radioButton3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/radioButton2"
+                    android:clickable="true"
+                    android:onClick="theTotalTimeForTheSelectedCategories"
+                    android:text="@string/radio_button_3" />
+
+                <CheckBox
+                    android:id="@+id/radioButton4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/radioButton3"
+                    android:clickable="true"
+                    android:onClick="theTotalTimeForTheSelectedCategories"
+                    android:text="@string/radio_button_4" />
+
+                <CheckBox
+                    android:id="@+id/radioButton5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/radioButton4"
+                    android:clickable="true"
+                    android:onClick="theTotalTimeForTheSelectedCategories"
+                    android:text="@string/radio_button_5" />
+
+                <TextView
+                    android:id="@+id/list_3_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/radioButton5"
+                    android:layout_centerHorizontal="true"
+                    android:text="Категория не выбрана" />
+
+                <TextView
+                    android:id="@+id/name_diagram_textView"
+                    style="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/list_3_textView"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/text_diagram" />
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/idPieChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:layout_below="@+id/name_diagram_textView" />
+
+
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

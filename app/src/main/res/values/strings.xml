@@ -9,4 +9,14 @@
     <string name="text_date_start">Начало:</string>
     <string name="text_date_end">Конец:</string>
     <string name="text_rounded_time">Запись продлиться</string>
+    <string name="header_text">Статистика</string>
+    <string name="text_top_cases">Самые частые занятия</string>
+    <string name="text_list_2">Cамое большое суммарное время по категориям</string>
+    <string name="text_lost_3">Cуммарное время по выбранным категориям</string>
+    <string name="text_diagram">Диаграмма времени по всем категориям</string>
+    <string name="radio_button_1">Работа</string>
+    <string name="radio_button_2">Обед</string>
+    <string name="radio_button_3">Отдых</string>
+    <string name="radio_button_4">Уборка</string>
+    <string name="radio_button_5">Сон</string>
 </resources>

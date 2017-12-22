@@ -37,21 +37,23 @@ public class DbPhoto {
         cv.put(DbHelper.TITLE, newTitle);
         cv.put(DbHelper.IMAGE, newPath);
         String[] args = new String[]{String.valueOf(id)};
-        db.update(DbHelper.TABLE_PHOTO, cv, "_id = ?", args);
+        db.update(DbHelper.TABLE_PHOTO, cv, DbHelper.KEY_ID + " = ?", args);
     }
 
     public void insertPhoto(String newTitle, String newPath) {
-        String insertQuery = "insert into " + DbHelper.TABLE_PHOTO + " (" + DbHelper.TITLE + DbHelper.IMAGE + ")" +
+        String insertQuery = "insert into " + DbHelper.TABLE_PHOTO + " ("
+                + DbHelper.TITLE +", "+ DbHelper.IMAGE + ")" +
                 " values ('" + newTitle + "', '" + newPath + "')";
         dbHelper.getWritableDatabase().execSQL(insertQuery);
     }
 
     public void deleteItem(int id) {
         db = dbHelper.getWritableDatabase();
-        db.delete(DbHelper.TABLE_PHOTO, DbHelper.KEY_ID + "=" + id, null);
+        String[] args = new String[]{String.valueOf(id)};
+        db.delete(DbHelper.TABLE_PHOTO, DbHelper.KEY_ID + "=" + id, args);
     }
 
-    public List<Photo> getPhoto() {
+    public List<Photo> getAllPhotos() {
         cursor = db.query(DbHelper.TABLE_PHOTO, null, null, null, null, null, null);
         mPhotoList = new ArrayList<>();
 

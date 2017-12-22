@@ -1,6 +1,7 @@
 package com.chanta.androidlaba3;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -37,8 +38,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerCategory = (RecyclerView) findViewById(R.id.categoryRecycleView);
         recyclerCategory.setLayoutManager(new LinearLayoutManager(this));
         recyclerCategory.setAdapter(new CategoryAdapter(this, categories));
-
-
     }
 
     @Override
@@ -55,8 +54,8 @@ public class MainActivity extends AppCompatActivity {
             finish();
             return true;
         } else if (id == R.id.action_statistic) {
-//            Intent intent = new Intent(MainActivity.this, Statistic.class);
-//            startActivity(intent);
+            Intent intent = new Intent(MainActivity.this, StatisticsActivity.class);
+            startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
