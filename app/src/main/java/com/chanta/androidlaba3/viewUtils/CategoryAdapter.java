@@ -41,12 +41,15 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
     public void onBindViewHolder(CategoryViewHolder holder, int position) {
         holder.nameTxt.setText(categories.get(position).getName());
         holder.descriptionTxt.setText(categories.get(position).getDescriptionCategory());
-//        int photoId = categories.get(position).getPhotoId();
-//        DbPhoto dbPhoto = new DbPhoto(context);
-//        Photo photo = dbPhoto.getAllPhotos(String.valueOf(photoId)).get(0);
-//        byte[] foodImage = photo.getImage();
-//        Bitmap bitmap = BitmapFactory.decodeByteArray(foodImage, 0, foodImage.length);
-//        holder.photo.setImageBitmap(bitmap);
+        Integer photoId = categories.get(position).getPhotoId();
+        if(photoId != null) {
+            DbPhoto dbPhoto = new DbPhoto(context);
+            dbPhoto.openDB();
+            Photo photo = dbPhoto.getAllPhotos().get(photoId);
+            byte[] foodImage = photo.getImage();
+            Bitmap bitmap = BitmapFactory.decodeByteArray(foodImage, 0, foodImage.length);
+            holder.photo.setImageBitmap(bitmap);
+        }
     }
 
     @Override

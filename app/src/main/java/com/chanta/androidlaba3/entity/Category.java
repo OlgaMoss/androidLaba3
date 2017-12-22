@@ -8,12 +8,12 @@ public class Category {
     private int id;
     private String name;
     private String descriptionCategory;
-    private int photoId;
+    private Integer photoId;
 
     public Category() {
     }
 
-    public Category(int id, String name, String descriptionCategory, int photoId) {
+    public Category(int id, String name, String descriptionCategory, Integer photoId) {
         this.id = id;
         this.name = name;
         this.descriptionCategory = descriptionCategory;
@@ -44,11 +44,11 @@ public class Category {
         this.descriptionCategory = descriptionCategory;
     }
 
-    public int getPhotoId() {
+    public Integer getPhotoId() {
         return photoId;
     }
 
-    public void setPhotoId(int photoId) {
+    public void setPhotoId(Integer photoId) {
         this.photoId = photoId;
     }
 }

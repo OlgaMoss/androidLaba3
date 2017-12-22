@@ -110,56 +110,51 @@ public class EditNewRecordActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        findViewById(R.id.accepted_floatingActionButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //todo пересчитать roundedTime
-                DbRecord dbRecord = new DbRecord(getApplicationContext());
-                String roundedTime = getRoundedTime(
+        findViewById(R.id.accepted_floatingActionButton).setOnClickListener(v -> {
+            //todo пересчитать roundedTime
+            DbRecord dbRecord = new DbRecord(getApplicationContext());
+            String roundedTime = getRoundedTime(
+                    mStartDateTextView.getText().toString(),
+                    mStartTimeTextView.getText().toString(),
+                    mEndDateTextView.getText().toString(),
+                    mEndTimeTextView.getText().toString());
+
+            if (isNew) {
+                dbRecord.insertRecord(mDescriptionEditText.getText().toString(),
                         mStartDateTextView.getText().toString(),
                         mStartTimeTextView.getText().toString(),
                         mEndDateTextView.getText().toString(),
-                        mEndTimeTextView.getText().toString());
+                        mEndTimeTextView.getText().toString(),
+                        roundedTime,
+                        photoIdList,
+                        positionCategory);
+                final Intent intent = new Intent(v.getContext(), RecordsActivity.class);
+                intent.putExtra(DbHelper.CATEGORY_ID, positionCategory);
+                startActivity(intent);
 
-                if (isNew) {
-                    dbRecord.insertRecord(mDescriptionEditText.getText().toString(),
-                            mStartDateTextView.getText().toString(),
-                            mStartTimeTextView.getText().toString(),
-                            mEndDateTextView.getText().toString(),
-                            mEndTimeTextView.getText().toString(),
-                            roundedTime,
-                            photoIdList,
-                            positionCategory);
-                    final Intent intent = new Intent(v.getContext(), RecordsActivity.class);
-                    intent.putExtra(DbHelper.CATEGORY_ID, positionCategory);
-                    startActivity(intent);
-
-                } else {
-                    dbRecord.updateRecord(record.getId(),
-                            mDescriptionEditText.getText().toString(),
-                            mStartDateTextView.getText().toString(),
-                            mStartTimeTextView.getText().toString(),
-                            mEndDateTextView.getText().toString(),
-                            mEndTimeTextView.getText().toString(),
-                            roundedTime,
-                            photoIdList,
-                            positionCategory);
-                    final Intent intent = new Intent(v.getContext(), RecordsActivity.class);
-                    intent.putExtra(DbHelper.CATEGORY_ID, positionCategory - 1);
-                    startActivity(intent);
-                }
+            } else {
+                dbRecord.updateRecord(record.getId(),
+                        mDescriptionEditText.getText().toString(),
+                        mStartDateTextView.getText().toString(),
+                        mStartTimeTextView.getText().toString(),
+                        mEndDateTextView.getText().toString(),
+                        mEndTimeTextView.getText().toString(),
+                        roundedTime,
+                        photoIdList,
+                        positionCategory);
+                final Intent intent = new Intent(v.getContext(), RecordsActivity.class);
+                intent.putExtra(DbHelper.CATEGORY_ID, positionCategory - 1);
+                startActivity(intent);
             }
         });
 
         //todo add images
         addImage = (Button) findViewById(R.id.addImageBtn);
         addImage.setOnClickListener(v -> {
-
             ActivityCompat.requestPermissions(
                     EditNewRecordActivity.this,
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                     REQUEST_CODE_GALLERY);
-
         });
 
         dbPhoto = new DbPhoto(this);
@@ -202,10 +197,7 @@ public class EditNewRecordActivity extends AppCompatActivity {
 
             try {
                 InputStream inputStream = getContentResolver().openInputStream(uri);
-
                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-
-                //todo в базу записать
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
                 byte[] byteArray = stream.toByteArray();

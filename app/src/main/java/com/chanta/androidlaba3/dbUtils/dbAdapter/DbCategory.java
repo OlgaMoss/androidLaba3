@@ -40,7 +40,7 @@ public class DbCategory {
         return this;
     }
 
-    public void updateCategory(int id, String name, String newDescription, String newPhotoId) {
+    public void updateCategory(int id, String name, String newDescription, int newPhotoId) {
         db = dbHelper.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(DbHelper.NAME, name);

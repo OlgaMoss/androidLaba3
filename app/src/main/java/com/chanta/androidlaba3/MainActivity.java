@@ -1,8 +1,10 @@
 package com.chanta.androidlaba3;
 
-import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,9 +14,13 @@ import android.view.MenuItem;
 
 import com.chanta.androidlaba3.dbUtils.DbHelper;
 import com.chanta.androidlaba3.dbUtils.dbAdapter.DbCategory;
+import com.chanta.androidlaba3.dbUtils.dbAdapter.DbPhoto;
 import com.chanta.androidlaba3.entity.Category;
 import com.chanta.androidlaba3.viewUtils.CategoryAdapter;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private DbCategory dbCategory;
     private DbHelper dbHelper;
     private List<Category> categories;
+    private DbPhoto dbPhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +45,44 @@ public class MainActivity extends AppCompatActivity {
         recyclerCategory = (RecyclerView) findViewById(R.id.categoryRecycleView);
         recyclerCategory.setLayoutManager(new LinearLayoutManager(this));
         recyclerCategory.setAdapter(new CategoryAdapter(this, categories));
+
+        AssetManager mngr = getAssets();
+        try {
+            InputStream inputStream = mngr.open("ball.png");
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
+            byte[] byteArray = stream.toByteArray();
+            dbPhoto = new DbPhoto(this);
+            dbPhoto.openDB();
+            dbPhoto.insertPhoto("Фото 1", byteArray);
+            inputStream = mngr.open("tree.png");
+            bitmap = BitmapFactory.decodeStream(inputStream);
+            stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
+            byteArray = stream.toByteArray();
+            dbPhoto.insertPhoto("Фото 2", byteArray);
+            inputStream = mngr.open("bird.png");
+            bitmap = BitmapFactory.decodeStream(inputStream);
+            stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
+            byteArray = stream.toByteArray();
+            dbPhoto.insertPhoto("Фото 3", byteArray);
+            inputStream = mngr.open("cat.png");
+            bitmap = BitmapFactory.decodeStream(inputStream);
+            stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
+            byteArray = stream.toByteArray();
+            dbPhoto.insertPhoto("Фото 4", byteArray);
+            inputStream = mngr.open("smile.png");
+            bitmap = BitmapFactory.decodeStream(inputStream);
+            stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
+            byteArray = stream.toByteArray();
+            dbPhoto.insertPhoto("Фото 5", byteArray);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
