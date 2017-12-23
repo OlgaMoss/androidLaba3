@@ -33,6 +33,8 @@ public class StatisticsActivity extends AppCompatActivity {
     private int startYear, startMonth, startDay;
     private int endYear, endMonth, endDay;
     private TextView mStartDateTextView, mEndDateTextView;
+    private CheckBox mCheckedArbitrary;
+    private boolean isArbitrary = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,7 @@ public class StatisticsActivity extends AppCompatActivity {
         xData = new ArrayList<>();
         mStartDateTextView = (TextView) findViewById(R.id.startDateAnyTime);
         mEndDateTextView = (TextView) findViewById(R.id.endDateAnyTime);
+        mCheckedArbitrary = (CheckBox) findViewById(R.id.any_Time_CheckBox);
 
         final Calendar c = Calendar.getInstance();
 
@@ -65,6 +68,22 @@ public class StatisticsActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        mCheckedArbitrary.setOnClickListener(v -> {
+
+            if (((CheckBox) v).isChecked()) {
+                isArbitrary = true;
+                mostFrequentCase();
+                theLargestTotalTimeByCategory();
+                timeChartInAllCategories();
+            } else {
+                isArbitrary = false;
+                mostFrequentCase();
+                theLargestTotalTimeByCategory();
+                timeChartInAllCategories();
+            }
+
+        });
+
         mostFrequentCase();
         theLargestTotalTimeByCategory();
         timeChartInAllCategories();
@@ -74,10 +93,29 @@ public class StatisticsActivity extends AppCompatActivity {
     public void mostFrequentCase() {
         DbHelper dbHelper = new DbHelper(this);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String query = "SELECT " + DbHelper.DESCRIPTION_RECORD + ", COUNT(" + DbHelper.DESCRIPTION_RECORD + ")" +
-                " FROM " + DbHelper.TABLE_RECORD +
-                " group by " + DbHelper.DESCRIPTION_RECORD +
-                " ORDER BY COUNT(" + DbHelper.DESCRIPTION_RECORD + ") DESC;";
+        String query = "";
+        if (isArbitrary) {
+            String start = mStartDateTextView.getText().toString();
+            String end = mEndDateTextView.getText().toString();
+            query = "SELECT " + DbHelper.DESCRIPTION_RECORD + "," +
+                    " COUNT(" + DbHelper.DESCRIPTION_RECORD + ")," +
+                    " strftime('%s'," + DbHelper.DATE_START + ") start, " +
+                    " strftime('%s'," + DbHelper.DATE_END + ") end " +
+                    " FROM " + DbHelper.TABLE_RECORD +
+                    " where start >= strftime('%s'," + start + ")" +
+                    " and end <= strftime('%s'," + end + ")" +
+                    " group by " + DbHelper.DESCRIPTION_RECORD +
+                    " ORDER BY COUNT(" + DbHelper.DESCRIPTION_RECORD + ") DESC;";
+            Log.d(TAG, "mostFrequentCase: " + start);
+            Log.d(TAG, "mostFrequentCase: " + end);
+            Log.d(TAG, "mostFrequentCase: " + query);
+        } else {
+            query = "SELECT " + DbHelper.DESCRIPTION_RECORD + "," +
+                    " COUNT(" + DbHelper.DESCRIPTION_RECORD + ")" +
+                    " FROM " + DbHelper.TABLE_RECORD +
+                    " group by " + DbHelper.DESCRIPTION_RECORD +
+                    " ORDER BY COUNT(" + DbHelper.DESCRIPTION_RECORD + ") DESC;";
+        }
         Cursor cursor = db.rawQuery(query, new String[]{});
         String listTop = "";
         int k = 1;
